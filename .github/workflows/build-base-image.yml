@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # 允許手動觸發
   push:
     paths:
-      - 'docs/docker image/Dockerfile.base' # 當此檔案變動時自動觸發
+      - 'Dockerfile.base' # 當此檔案變動時自動觸發
 
 jobs:
   build_and_export:

@@ -1,0 +1,27 @@
+# Dockerfile.base
+# 內部 Runtime Base：Debian Bookworm Slim + freetype/fontconfig + 常用字型
+FROM debian:bookworm-slim
+
+# 基本工具與字型
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        locales \
+        libfreetype6 \
+        fontconfig \
+        fonts-noto-cjk \
+        fonts-dejavu-core && \
+    rm -rf /var/lib/apt/lists/*
+
+# 設定常見語系
+RUN sed -i 's/# zh_TW.UTF-8 UTF-8/zh_TW.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen zh_TW.UTF-8 && \
+    update-ca-certificates
+
+ENV LANG=zh_TW.UTF-8 \
+    LANGUAGE=zh_TW:zh \
+    LC_ALL=zh_TW.UTF-8
+
+# 驗證字型與函式庫
+RUN test -f /usr/lib/x86_64-linux-gnu/libfreetype.so.6 || (echo "libfreetype.so.6 not found!" && exit 1) && \
+    fc-list | head -n 20
