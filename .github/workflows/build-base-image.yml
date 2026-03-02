@@ -1,0 +1,37 @@
+name: Build and Export Offline Base Image
+
+on:
+  workflow_dispatch: # 允許手動觸發
+  push:
+    paths:
+      - 'docs/docker image/Dockerfile.base' # 當此檔案變動時自動觸發
+
+jobs:
+  build_and_export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        run: |
+          # 建立 image 並命名為 custom-base-image:latest
+          docker build \
+            -t custom-base-image:latest \
+            -f "docs/docker image/Dockerfile.base" \
+            "docs/docker image"
+
+      - name: Save Docker Image to Tarball
+        run: |
+          # 將 image 匯出為 .tar 檔案 (適用於離線匯入)
+          docker save -o custom-base-image.tar custom-base-image:latest
+
+      - name: Upload Docker Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: custom-base-image-tarball
+          path: custom-base-image.tar
+          retention-days: 7 # 產生的檔案保留 7 天
