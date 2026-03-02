@@ -34,4 +34,4 @@ jobs:
         with:
           name: custom-base-image-tarball
           path: custom-base-image.tar
-          retention-days: 7 # 產生的檔案保留 7 天
+          retention-days: 10 # 產生的檔案保留 10 天
