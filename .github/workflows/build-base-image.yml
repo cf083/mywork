@@ -21,8 +21,8 @@ jobs:
           # 建立 image 並命名為 custom-base-image:latest
           docker build \
             -t custom-base-image:latest \
-            -f "docs/docker image/Dockerfile.base" \
-            "docs/docker image"
+            -f "Dockerfile.base" \
+            "."
 
       - name: Save Docker Image to Tarball
         run: |
