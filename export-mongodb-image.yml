@@ -1,0 +1,30 @@
+name: Export MongoDB Docker Image (Offline)
+
+on:
+  workflow_dispatch:   # 手動觸發
+  push:
+    paths:
+      - '.github/workflows/export-mongodb-image.yml'
+
+jobs:
+  pull_and_export:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Pull MongoDB Image
+        run: |
+          docker pull mongo:7
+
+      - name: Save MongoDB Image to Tarball
+        run: |
+          docker save -o mongo-7-image.tar mongo:7
+
+      - name: Upload Docker Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mongo-7-image-tarball
+          path: mongo-7-image.tar
+          retention-days: 7 # 產生的檔案保留 7 天
