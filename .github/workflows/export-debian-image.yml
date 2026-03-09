@@ -1,0 +1,31 @@
+name: Export Debian Docker Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export-debian:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull Debian image
+        run: |
+          docker pull debian:bookworm-slim
+
+      - name: Verify image
+        run: |
+          docker images | grep debian
+
+      - name: Save image to tar
+        run: |
+          docker save debian:bookworm-slim -o debian-bookworm-slim.tar
+
+      - name: Compress image
+        run: |
+          tar -czvf debian-bookworm-slim.tar.gz debian-bookworm-slim.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: debian-bookworm-slim-image
+          path: debian-bookworm-slim.tar.gz
