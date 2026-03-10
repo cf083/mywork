@@ -1,0 +1,27 @@
+name: Export Node Docker Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export-node:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull Node image
+        run: |
+          docker pull node:20-alpine
+
+      - name: Save image to tar
+        run: |
+          docker save node:20-alpine -o node-image.tar
+
+      - name: Compress image
+        run: |
+          tar -czvf node-image.tar.gz node-image.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-docker-image
+          path: node-image.tar.gz
