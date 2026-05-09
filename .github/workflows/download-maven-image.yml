@@ -1,0 +1,25 @@
+name: Download and Export Maven Image
+
+on:
+  workflow_dispatch: # 允許手動觸發
+
+jobs:
+  download_and_export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Docker Image
+        run: |
+          # 下載官方 maven image
+          docker pull maven:3.9.9-eclipse-temurin-17
+
+      - name: Save Docker Image to Tarball
+        run: |
+          # 將 image 匯出為 .tar 檔案 (適用於離線環境)
+          docker save -o maven-temurin-17.tar maven:3.9.9-eclipse-temurin-17
+
+      - name: Upload Docker Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-temurin-17-tarball
+          path: maven-temurin-17.tar
+          retention-days: 7 # 產生的檔案保留 7 天
