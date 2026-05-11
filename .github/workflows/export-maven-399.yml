@@ -1,4 +1,4 @@
-name: Download and Export Maven Image
+name: maven:3.9.9-eclipse-temurin-17 Docker Image Download and Export
 
 on:
   workflow_dispatch: # 允許手動觸發
