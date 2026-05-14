@@ -1,4 +1,4 @@
-﻿name: Download alpine 3.22
+﻿name: Download maven 3.9.15-eclipse-temurin-17-alpine
 
 on:
   workflow_dispatch: # 允許手動觸發
@@ -9,17 +9,17 @@ jobs:
     steps:
       - name: Pull Docker Image
         run: |
-          # 下載 alpine:3.22 映像檔
-          docker pull alpine:3.22
+          # 下載 maven:3.9.15-eclipse-temurin-17-alpine 映像檔
+          docker pull maven:3.9.15-eclipse-temurin-17-alpine
 
       - name: Save Docker Image to Tarball
         run: |
           # 將 image 匯出為 .tar 檔案 (適用於離線匯入)
-          docker save -o alpine-3.22.tar alpine:3.22
+          docker save -o maven-eclipse-temurin-17-alpine.tar maven:3.9.15-eclipse-temurin-17-alpine
 
       - name: Upload Docker Image Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: alpine-3.22-tarball
-          path: alpine-3.22.tar
+          name: maven-eclipse-temurin-17-alpine-tarball
+          path: maven-eclipse-temurin-17-alpine.tar
           retention-days: 7 # 產生的檔案保留 7 天
