@@ -1,0 +1,25 @@
+name: Download eclipse-temurin:17-jre-jammy
+
+on:
+  workflow_dispatch: # 允許手動觸發
+
+jobs:
+  download_and_export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Docker Image
+        run: |
+          # 下載 eclipse-temurin:17-jre-jammy 映像檔
+          docker pull eclipse-temurin:17-jre-jammy
+
+      - name: Save Docker Image to Tarball
+        run: |
+          # 將 image 匯出為 .tar 檔案 (適用於離線匯入)
+          docker save -o eclipse-temurin-17-jre-jammy.tar eclipse-temurin:17-jre-jammy
+
+      - name: Upload Docker Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eclipse-temurin-17-jre-jammy-tarball
+          path: eclipse-temurin-17-jre-jammy.tar
+          retention-days: 7 # 產生的檔案保留 7 天
