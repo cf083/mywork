@@ -1,0 +1,25 @@
+name: Download distroless java17-debian12
+
+on:
+  workflow_dispatch: # 允許手動觸發
+
+jobs:
+  download_and_export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Docker Image
+        run: |
+          # 下載 gcr.io/distroless/java17-debian12 映像檔
+          docker pull gcr.io/distroless/java17-debian12
+
+      - name: Save Docker Image to Tarball
+        run: |
+          # 將 image 匯出為 .tar 檔案 (適用於離線匯入)
+          docker save -o distroless-java17-debian12.tar gcr.io/distroless/java17-debian12
+
+      - name: Upload Docker Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: distroless-java17-debian12-tarball
+          path: distroless-java17-debian12.tar
+          retention-days: 7 # 產生的檔案保留 7 天
